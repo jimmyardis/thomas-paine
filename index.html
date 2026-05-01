@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thomas Paine — In Conversation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --parchment:        #F2E6D0;
+      --ink-black:        #1A1208;
+      --revolutionary-red:#8B1A1A;
+      --iron-grey:        #4A4A52;
+      --candleflame:      #D4943A;
+      --deep-red:         #5A1010;
+      --warm-grey:        #6B6B73;
+      --off-white:        #FAF6F0;
+      --shadow-brown:     #2E241A;
+      --press-wood:       #8B6F47;
+      --type-metal:       #3A3A42;
+      --paper-edge:       #E8DCC0;
+      --text:             #2E241A;
+      --text-mid:         #5A4A38;
+      --text-dim:         #8A7A62;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--parchment);
+      color: var(--text);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    /* Aged paper grain */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0.15'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)' opacity='0.055'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ── HEADER ── */
+    header {
+      padding: 1rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--ink-black);
+      border-bottom: 3px solid var(--revolutionary-red);
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .header-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.4em;
+      color: rgba(212,148,58,0.55);
+      text-transform: uppercase;
+    }
+
+    .header-right {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      color: rgba(212,148,58,0.3);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      border-bottom: 3px solid var(--ink-black);
+      overflow: hidden;
+      animation: fadeIn 1s ease 0.2s both;
+    }
+
+    .press-panel {
+      position: relative;
+      background: var(--shadow-brown);
+      overflow: hidden;
+      min-height: 500px;
+    }
+
+    .press-panel svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-title {
+      position: absolute;
+      bottom: 3rem;
+      left: 3rem;
+      right: 3rem;
+      z-index: 10;
+    }
+
+    .hero-title .place-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.4em;
+      color: var(--candleflame);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.8rem;
+      opacity: 0.75;
+    }
+
+    .hero-title h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.2rem, 4.5vw, 5rem);
+      font-weight: 900;
+      color: var(--off-white);
+      line-height: 1.0;
+      letter-spacing: 0.04em;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    }
+
+    .hero-title h1 em {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--candleflame);
+      display: block;
+      font-size: 0.65em;
+    }
+
+    .hero-title .years {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.42em;
+      color: var(--candleflame);
+      margin-top: 0.8rem;
+      display: block;
+      opacity: 0.55;
+    }
+
+    /* ── BIO PANEL ── */
+    .bio-panel {
+      display: flex;
+      flex-direction: column;
+      padding: 3rem 2.2rem;
+      border-left: 3px solid var(--ink-black);
+      background: var(--off-white);
+      position: relative;
+    }
+
+    /* Red margin stripe */
+    .bio-panel::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 6px;
+      background: var(--revolutionary-red);
+    }
+
+    .exhibit-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 0.56rem;
+      letter-spacing: 0.35em;
+      color: var(--revolutionary-red);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    .photo-frame {
+      position: relative;
+      width: 100%;
+      max-width: 265px;
+      margin: 0 auto 2rem;
+      border: 2px solid var(--ink-black);
+    }
+
+    .photo-frame::before {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border: 1px solid rgba(26,18,8,0.25);
+    }
+
+    .photo-frame::after {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border: 1px solid rgba(26,18,8,0.1);
+    }
+
+    .photo-frame img {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+      filter: grayscale(20%) sepia(15%) contrast(1.1) brightness(0.9);
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--paper-edge);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-placeholder span {
+      font-style: italic;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    .placard {
+      border-top: 2px solid var(--ink-black);
+      padding-top: 1.5rem;
+      margin-top: auto;
+    }
+
+    .placard-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--ink-black);
+      margin-bottom: 0.15rem;
+    }
+
+    .placard-sub {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      font-size: 0.88rem;
+      color: var(--revolutionary-red);
+      margin-bottom: 0.3rem;
+      opacity: 0.8;
+    }
+
+    .placard-dates {
+      font-family: 'Cinzel', serif;
+      font-size: 0.52rem;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+
+    .placard-bio {
+      font-size: 0.88rem;
+      line-height: 1.9;
+      color: var(--text-mid);
+    }
+
+    .placard-bio strong { color: var(--ink-black); font-weight: 700; }
+    .placard-bio em { font-style: italic; color: var(--revolutionary-red); }
+
+    /* ── REVOLUTION BAND ── */
+    .revolution-band {
+      background: var(--revolutionary-red);
+      border-top: 2px solid var(--deep-red);
+      border-bottom: 2px solid var(--deep-red);
+      padding: 1.2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .revolution-band .band-rule {
+      flex: 1;
+      height: 1px;
+      background: rgba(250,246,240,0.2);
+    }
+
+    .revolution-band .band-text {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.8em;
+      color: rgba(250,246,240,0.7);
+      text-transform: uppercase;
+    }
+
+    /* ── CHATBOT SECTION ── */
+    .chatbot-section {
+      padding: 5rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1.8fr;
+      gap: 5rem;
+      border-bottom: 3px solid var(--ink-black);
+      background: var(--parchment);
+      animation: fadeIn 1s ease 0.4s both;
+      position: relative;
+    }
+
+    /* Ruled lines — letter paper */
+    .chatbot-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 34px,
+        rgba(26,18,8,0.05) 34px, rgba(26,18,8,0.05) 35px
+      );
+      pointer-events: none;
+    }
+
+    .chatbot-intro h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.65rem;
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--ink-black);
+      margin-bottom: 1.5rem;
+    }
+
+    .chatbot-intro h2 em {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--revolutionary-red);
+    }
+
+    .chatbot-intro p {
+      font-size: 0.96rem;
+      line-height: 1.92;
+      color: var(--text-mid);
+      margin-bottom: 1rem;
+    }
+
+    /* Common Sense callout */
+    .common-sense-note {
+      margin-top: 2rem;
+      padding: 1.2rem 1.5rem;
+      border-left: 4px solid var(--revolutionary-red);
+      background: rgba(139,26,26,0.06);
+      font-style: italic;
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .common-sense-note strong {
+      font-style: normal;
+      font-size: 0.62rem;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.1em;
+      color: var(--revolutionary-red);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .domain-tags {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .domain-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 0.46rem;
+      letter-spacing: 0.18em;
+      color: var(--revolutionary-red);
+      border: 1px solid rgba(139,26,26,0.25);
+      padding: 0.28rem 0.7rem;
+      opacity: 0.7;
+    }
+
+    /* Chatbot embed */
+    .chatbot-embed {
+      border: 2px solid var(--ink-black);
+      min-height: 560px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--paper-edge);
+      box-shadow: 5px 5px 0 var(--ink-black);
+      overflow: hidden;
+    }
+
+    .chatbot-embed::before {
+      content: '';
+      position: absolute;
+      inset: 7px;
+      border: 1px solid rgba(26,18,8,0.1);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .chatbot-embed .broadsheet-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.22;
+    }
+
+    .panel-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 0.5rem 1rem;
+      background: var(--ink-black);
+      border-top: 1px solid rgba(212,148,58,0.2);
+      font-family: 'Cinzel', serif;
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      color: rgba(212,148,58,0.4);
+      text-align: center;
+      z-index: 2;
+      text-transform: uppercase;
+    }
+
+    /* ── PULL QUOTE ── */
+    .pull-quote {
+      padding: 6rem 3rem;
+      text-align: center;
+      max-width: 920px;
+      margin: 0 auto;
+      border-bottom: 3px solid var(--ink-black);
+    }
+
+    .quote-ornament {
+      font-family: 'Cinzel', serif;
+      font-size: 0.5rem;
+      letter-spacing: 0.5em;
+      color: var(--revolutionary-red);
+      opacity: 0.4;
+      margin-bottom: 2.5rem;
+      display: block;
+    }
+
+    .pull-quote blockquote {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.05rem, 2vw, 1.65rem);
+      line-height: 1.7;
+      font-style: italic;
+      color: var(--ink-black);
+      font-weight: 400;
+    }
+
+    .pull-quote cite {
+      display: block;
+      margin-top: 2rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.28em;
+      font-style: normal;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    /* ── CORPUS STRIP ── */
+    .corpus-strip {
+      background: var(--ink-black);
+      padding: 2.5rem 3rem;
+      border-bottom: 3px solid var(--revolutionary-red);
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .corpus-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.35em;
+      color: rgba(212,148,58,0.5);
+      white-space: nowrap;
+      padding-top: 0.2rem;
+      min-width: 100px;
+      text-transform: uppercase;
+    }
+
+    .corpus-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1.8rem;
+    }
+
+    .corpus-item {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      font-size: 0.88rem;
+      color: rgba(242,230,208,0.45);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 1.8rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--ink-black);
+      border-top: 3px solid var(--revolutionary-red);
+    }
+
+    .footer-text {
+      font-family: 'Cinzel', serif;
+      font-size: 0.52rem;
+      letter-spacing: 0.22em;
+      color: rgba(212,148,58,0.3);
+      text-transform: uppercase;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .press-panel { min-height: 380px; }
+      .bio-panel { border-left: none; border-top: 3px solid var(--ink-black); padding: 2rem 1.5rem; }
+      .chatbot-section { grid-template-columns: 1fr; gap: 3rem; padding: 3rem 1.5rem; }
+      header { padding: 1rem 1.5rem; }
+      .hero-title { left: 1.5rem; right: 1.5rem; bottom: 2rem; }
+      .corpus-strip { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .pull-quote { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <span class="header-label">In Conversation With</span>
+    <span class="header-right">Accession No. &nbsp;TP–1737–2026</span>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <!-- Left: Colonial Printing Press Workshop -->
+    <div class="press-panel">
+      <svg viewBox="0 0 700 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="candleLight" cx="62%" cy="48%" r="55%">
+            <stop offset="0%"   stop-color="rgba(212,148,58,0.45)"/>
+            <stop offset="35%"  stop-color="rgba(212,148,58,0.15)"/>
+            <stop offset="70%"  stop-color="rgba(212,148,58,0.04)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+          <radialGradient id="candleFlame" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stop-color="rgba(255,220,100,0.95)"/>
+            <stop offset="40%"  stop-color="rgba(212,148,58,0.6)"/>
+            <stop offset="100%" stop-color="rgba(212,100,20,0)"/>
+          </radialGradient>
+          <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#2A1E12"/>
+            <stop offset="100%" stop-color="#1A1208"/>
+          </linearGradient>
+          <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#1E180E"/>
+            <stop offset="100%" stop-color="#2E241A"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+
+        <!-- Workshop walls -->
+        <rect width="700" height="900" fill="url(#wallGrad)"/>
+
+        <!-- Stone floor -->
+        <rect x="0" y="700" width="700" height="200" fill="url(#floorGrad)"/>
+        <!-- Floor planks -->
+        <g stroke="rgba(60,40,20,0.4)" stroke-width="1" fill="none">
+          <line x1="0" y1="720" x2="700" y2="720"/>
+          <line x1="0" y1="740" x2="700" y2="740"/>
+          <line x1="0" y1="760" x2="700" y2="760"/>
+          <line x1="0" y1="780" x2="700" y2="780"/>
+          <line x1="0" y1="800" x2="700" y2="800"/>
+          <line x1="0" y1="820" x2="700" y2="820"/>
+          <line x1="150" y1="700" x2="150" y2="900"/>
+          <line x1="300" y1="700" x2="300" y2="900"/>
+          <line x1="450" y1="700" x2="450" y2="900"/>
+          <line x1="600" y1="700" x2="600" y2="900"/>
+        </g>
+
+        <!-- Rear wall wooden beams -->
+        <rect x="0"   y="0" width="18" height="700" fill="rgba(80,60,30,0.6)"/>
+        <rect x="190" y="0" width="16" height="700" fill="rgba(80,60,30,0.5)"/>
+        <rect x="380" y="0" width="16" height="700" fill="rgba(80,60,30,0.5)"/>
+        <rect x="570" y="0" width="16" height="700" fill="rgba(80,60,30,0.5)"/>
+        <rect x="682" y="0" width="18" height="700" fill="rgba(80,60,30,0.6)"/>
+
+        <!-- Horizontal ceiling beam -->
+        <rect x="0" y="60" width="700" height="22" fill="rgba(90,65,32,0.7)" stroke="rgba(60,40,15,0.4)" stroke-width="1"/>
+        <rect x="0" y="55" width="700" height="7"  fill="rgba(100,75,38,0.5)"/>
+
+        <!-- ═══ HANGING PAMPHLETS ON LINE ═══ -->
+        <!-- String across workshop -->
+        <line x1="50" y1="95" x2="650" y2="100" stroke="rgba(139,111,71,0.6)" stroke-width="1.2"/>
+
+        <!-- Pamphlet 1 — COMMON SENSE -->
+        <g transform="translate(80,95)">
+          <rect x="0" y="0" width="55" height="75" fill="rgba(232,220,192,0.85)" stroke="rgba(26,18,8,0.5)" stroke-width="0.8" transform="rotate(-4)"/>
+          <rect x="3" y="3" width="49" height="69" fill="none" stroke="rgba(26,18,8,0.15)" stroke-width="0.5" transform="rotate(-4)"/>
+          <text x="27" y="20" text-anchor="middle" font-family="Cinzel, serif" font-size="6" fill="rgba(26,18,8,0.8)" transform="rotate(-4 27 20)" letter-spacing="0.5">COMMON</text>
+          <text x="27" y="30" text-anchor="middle" font-family="Cinzel, serif" font-size="6" fill="rgba(26,18,8,0.8)" transform="rotate(-4 27 30)" letter-spacing="0.5">SENSE</text>
+          <line x1="10" y1="35" x2="44" y2="35" stroke="rgba(26,18,8,0.3)" stroke-width="0.5" transform="rotate(-4 27 35)"/>
+          <text x="27" y="44" text-anchor="middle" font-family="serif" font-size="4.5" fill="rgba(26,18,8,0.5)" transform="rotate(-4 27 44)">T. PAINE</text>
+          <text x="27" y="53" text-anchor="middle" font-family="serif" font-size="4" fill="rgba(26,18,8,0.4)" transform="rotate(-4 27 53)">PHILADELPHIA</text>
+          <text x="27" y="61" text-anchor="middle" font-family="serif" font-size="4" fill="rgba(26,18,8,0.4)" transform="rotate(-4 27 61)">MDCCLXXVI</text>
+          <!-- Clothespin -->
+          <rect x="24" y="-6" width="6" height="10" fill="rgba(139,111,71,0.7)" rx="1"/>
+        </g>
+
+        <!-- Pamphlet 2 — THE CRISIS -->
+        <g transform="translate(200,98)">
+          <rect x="0" y="0" width="50" height="68" fill="rgba(225,210,180,0.8)" stroke="rgba(26,18,8,0.4)" stroke-width="0.8" transform="rotate(3)"/>
+          <text x="25" y="18" text-anchor="middle" font-family="Cinzel, serif" font-size="5.5" fill="rgba(139,26,26,0.85)" transform="rotate(3 25 18)">THE CRISIS</text>
+          <line x1="8" y1="22" x2="42" y2="22" stroke="rgba(139,26,26,0.3)" stroke-width="0.5" transform="rotate(3 25 22)"/>
+          <text x="25" y="32" text-anchor="middle" font-family="serif" font-size="4" fill="rgba(26,18,8,0.5)" transform="rotate(3 25 32)" font-style="italic">These are the times</text>
+          <text x="25" y="40" text-anchor="middle" font-family="serif" font-size="4" fill="rgba(26,18,8,0.5)" transform="rotate(3 25 40)" font-style="italic">that try men's souls.</text>
+          <rect x="22" y="-5" width="6" height="9" fill="rgba(139,111,71,0.7)" rx="1"/>
+        </g>
+
+        <!-- Pamphlet 3 — RIGHTS OF MAN -->
+        <g transform="translate(320,96)">
+          <rect x="0" y="0" width="52" height="72" fill="rgba(240,228,200,0.85)" stroke="rgba(26,18,8,0.45)" stroke-width="0.8" transform="rotate(-2)"/>
+          <text x="26" y="20" text-anchor="middle" font-family="Cinzel, serif" font-size="5.5" fill="rgba(26,18,8,0.8)" transform="rotate(-2 26 20)">RIGHTS</text>
+          <text x="26" y="29" text-anchor="middle" font-family="Cinzel, serif" font-size="5.5" fill="rgba(26,18,8,0.8)" transform="rotate(-2 26 29)">OF MAN</text>
+          <line x1="8" y1="34" x2="44" y2="34" stroke="rgba(26,18,8,0.2)" stroke-width="0.5" transform="rotate(-2 26 34)"/>
+          <text x="26" y="44" text-anchor="middle" font-family="serif" font-size="4" fill="rgba(26,18,8,0.4)" transform="rotate(-2 26 44)">PART THE FIRST</text>
+          <text x="26" y="54" text-anchor="middle" font-family="serif" font-size="3.8" fill="rgba(26,18,8,0.35)" transform="rotate(-2 26 54)">T. PAINE · 1791</text>
+          <rect x="23" y="-5" width="6" height="9" fill="rgba(139,111,71,0.7)" rx="1"/>
+        </g>
+
+        <!-- Pamphlet 4 — AGE OF REASON (partial) -->
+        <g transform="translate(450,97)">
+          <rect x="0" y="0" width="48" height="66" fill="rgba(218,200,168,0.75)" stroke="rgba(26,18,8,0.4)" stroke-width="0.8" transform="rotate(5)"/>
+          <text x="24" y="19" text-anchor="middle" font-family="Cinzel, serif" font-size="5" fill="rgba(26,18,8,0.75)" transform="rotate(5 24 19)">AGE OF</text>
+          <text x="24" y="28" text-anchor="middle" font-family="Cinzel, serif" font-size="5" fill="rgba(26,18,8,0.75)" transform="rotate(5 24 28)">REASON</text>
+          <text x="24" y="40" text-anchor="middle" font-family="serif" font-size="4" fill="rgba(26,18,8,0.4)" transform="rotate(5 24 40)">1794</text>
+          <rect x="21" y="-5" width="6" height="9" fill="rgba(139,111,71,0.7)" rx="1"/>
+        </g>
+
+        <!-- Pamphlet 5 — Broadsheet -->
+        <g transform="translate(560,98)">
+          <rect x="0" y="0" width="62" height="80" fill="rgba(228,214,185,0.8)" stroke="rgba(26,18,8,0.4)" stroke-width="0.8" transform="rotate(-3)"/>
+          <text x="31" y="14" text-anchor="middle" font-family="Cinzel, serif" font-size="6" fill="rgba(139,26,26,0.8)" transform="rotate(-3 31 14)" letter-spacing="1">THE</text>
+          <text x="31" y="23" text-anchor="middle" font-family="Cinzel, serif" font-size="6" fill="rgba(139,26,26,0.8)" transform="rotate(-3 31 23)" letter-spacing="1">PENNSYLVANIA</text>
+          <text x="31" y="32" text-anchor="middle" font-family="Cinzel, serif" font-size="6" fill="rgba(139,26,26,0.8)" transform="rotate(-3 31 32)" letter-spacing="1">GAZETTE</text>
+          <g transform="rotate(-3 31 45)">
+            <line x1="5"  y1="40" x2="57" y2="40" stroke="rgba(26,18,8,0.3)" stroke-width="0.5"/>
+            <line x1="5"  y1="47" x2="57" y2="47" stroke="rgba(26,18,8,0.2)" stroke-width="0.4"/>
+            <line x1="5"  y1="52" x2="57" y2="52" stroke="rgba(26,18,8,0.2)" stroke-width="0.4"/>
+            <line x1="5"  y1="57" x2="57" y2="57" stroke="rgba(26,18,8,0.2)" stroke-width="0.4"/>
+            <line x1="5"  y1="62" x2="40" y2="62" stroke="rgba(26,18,8,0.15)" stroke-width="0.4"/>
+          </g>
+          <rect x="28" y="-6" width="6" height="10" fill="rgba(139,111,71,0.7)" rx="1"/>
+        </g>
+
+        <!-- ═══ THE PRINTING PRESS ═══ -->
+        <g transform="translate(80,220)">
+
+          <!-- Press base / frame — heavy oak -->
+          <!-- Main vertical uprights -->
+          <rect x="40"  y="0"   width="28" height="420" fill="rgba(100,75,38,0.9)"  stroke="rgba(50,35,15,0.6)" stroke-width="1.5"/>
+          <rect x="240" y="0"   width="28" height="420" fill="rgba(100,75,38,0.9)"  stroke="rgba(50,35,15,0.6)" stroke-width="1.5"/>
+
+          <!-- Wood grain on uprights -->
+          <g stroke="rgba(80,55,25,0.25)" stroke-width="0.5" fill="none">
+            <line x1="48" y1="0"   x2="48" y2="420"/>
+            <line x1="55" y1="0"   x2="55" y2="420"/>
+            <line x1="62" y1="0"   x2="62" y2="420"/>
+            <line x1="248" y1="0"  x2="248" y2="420"/>
+            <line x1="255" y1="0"  x2="255" y2="420"/>
+            <line x1="262" y1="0"  x2="262" y2="420"/>
+          </g>
+
+          <!-- Top crossbeam -->
+          <rect x="30" y="0" width="248" height="32" fill="rgba(110,82,42,0.9)" stroke="rgba(50,35,15,0.6)" stroke-width="1.5"/>
+          <!-- Crossbeam detail -->
+          <rect x="35" y="5" width="238" height="4" fill="rgba(130,98,50,0.4)"/>
+
+          <!-- Upper crossbeam -->
+          <rect x="38" y="85" width="232" height="24" fill="rgba(105,78,40,0.85)" stroke="rgba(50,35,15,0.5)" stroke-width="1"/>
+
+          <!-- THE PLATEN — pressing plate -->
+          <rect x="55" y="145" width="198" height="18" fill="rgba(58,58,66,0.9)" stroke="rgba(30,30,38,0.6)" stroke-width="1.5"/>
+          <!-- Platen surface -->
+          <rect x="60" y="148" width="188" height="12" fill="rgba(48,48,56,0.8)"/>
+
+          <!-- SCREW mechanism — central vertical screw -->
+          <rect x="143" y="32" width="22" height="120" fill="rgba(58,58,66,0.85)" stroke="rgba(30,30,38,0.5)" stroke-width="1"/>
+          <!-- Screw thread details -->
+          <g stroke="rgba(90,90,100,0.4)" stroke-width="1.2" fill="none">
+            <line x1="143" y1="45"  x2="165" y2="45"/>
+            <line x1="143" y1="55"  x2="165" y2="55"/>
+            <line x1="143" y1="65"  x2="165" y2="65"/>
+            <line x1="143" y1="75"  x2="165" y2="75"/>
+            <line x1="143" y1="85"  x2="165" y2="85"/>
+            <line x1="143" y1="95"  x2="165" y2="95"/>
+            <line x1="143" y1="105" x2="165" y2="105"/>
+            <line x1="143" y1="115" x2="165" y2="115"/>
+            <line x1="143" y1="125" x2="165" y2="125"/>
+            <line x1="143" y1="135" x2="165" y2="135"/>
+          </g>
+
+          <!-- Handle bar on screw -->
+          <rect x="100" y="28" width="108" height="10" fill="rgba(100,75,38,0.9)" stroke="rgba(50,35,15,0.5)" stroke-width="1"/>
+          <circle cx="100" cy="33" r="8" fill="rgba(80,60,30,0.9)" stroke="rgba(50,35,15,0.5)" stroke-width="1"/>
+          <circle cx="208" cy="33" r="8" fill="rgba(80,60,30,0.9)" stroke="rgba(50,35,15,0.5)" stroke-width="1"/>
+
+          <!-- TYMPAN — paper holding frame -->
+          <rect x="62" y="165" width="184" height="130" fill="rgba(232,218,185,0.4)" stroke="rgba(100,78,40,0.7)" stroke-width="1.2"/>
+          <!-- Paper on tympan — the page being printed -->
+          <rect x="68" y="170" width="172" height="120" fill="rgba(242,230,200,0.7)" stroke="rgba(26,18,8,0.2)" stroke-width="0.5"/>
+          <!-- Text being printed — type impressions -->
+          <g fill="rgba(26,18,8,0.25)" font-family="Libre Baskerville, serif" font-size="5.5">
+            <text x="80" y="186">COMMON SENSE;</text>
+            <text x="80" y="195" font-size="4.8">ADDRESSED TO THE INHABITANTS</text>
+            <text x="80" y="203" font-size="4.8">OF AMERICA,</text>
+            <text x="80" y="215" font-size="4.5">On the following interesting Subjects.</text>
+            <line x1="78" y1="220" x2="230" y2="220" stroke="rgba(26,18,8,0.2)" stroke-width="0.4"/>
+            <text x="80" y="230" font-size="4">I. Of the Origin and Design of Government</text>
+            <text x="80" y="238" font-size="4">II. Of Monarchy and Hereditary Succession</text>
+            <text x="80" y="246" font-size="4">III. Thoughts on the present State</text>
+            <text x="80" y="254" font-size="4">   of American Affairs</text>
+            <text x="80" y="262" font-size="4">IV. Of the present Ability of America</text>
+            <line x1="78" y1="270" x2="230" y2="270" stroke="rgba(26,18,8,0.15)" stroke-width="0.3"/>
+            <text x="80" y="278" font-size="3.8">Written by an ENGLISHMAN</text>
+          </g>
+
+          <!-- TYPE BED — composing surface below platen -->
+          <rect x="52" y="297" width="204" height="38" fill="rgba(48,48,56,0.7)" stroke="rgba(30,30,38,0.5)" stroke-width="1"/>
+          <!-- Metal type blocks visible -->
+          <g fill="rgba(70,70,80,0.6)" stroke="rgba(40,40,50,0.4)" stroke-width="0.3">
+            <rect x="58"  y="302" width="6" height="12"/>
+            <rect x="66"  y="302" width="5" height="12"/>
+            <rect x="73"  y="302" width="7" height="12"/>
+            <rect x="82"  y="302" width="5" height="12"/>
+            <rect x="89"  y="302" width="6" height="12"/>
+            <rect x="97"  y="302" width="8" height="12"/>
+            <rect x="107" y="302" width="5" height="12"/>
+            <rect x="114" y="302" width="7" height="12"/>
+            <rect x="123" y="302" width="5" height="12"/>
+            <rect x="130" y="302" width="6" height="12"/>
+            <rect x="138" y="302" width="8" height="12"/>
+            <rect x="148" y="302" width="5" height="12"/>
+            <rect x="155" y="302" width="6" height="12"/>
+            <rect x="163" y="302" width="7" height="12"/>
+          </g>
+
+          <!-- CARRIAGE — rolling bed -->
+          <rect x="38" y="335" width="232" height="22" fill="rgba(90,68,35,0.8)" stroke="rgba(50,35,15,0.5)" stroke-width="1"/>
+          <!-- Carriage wheels suggestion -->
+          <circle cx="62"  cy="356" r="8" fill="none" stroke="rgba(70,52,26,0.5)" stroke-width="1.5"/>
+          <circle cx="246" cy="356" r="8" fill="none" stroke="rgba(70,52,26,0.5)" stroke-width="1.5"/>
+
+          <!-- INK BALL handles — round leather daubers -->
+          <ellipse cx="20"  cy="300" rx="14" ry="10" fill="rgba(26,18,8,0.7)" stroke="rgba(50,35,15,0.4)" stroke-width="1"/>
+          <rect x="16" y="270" width="8" height="32" fill="rgba(100,75,38,0.8)"/>
+          <ellipse cx="290" cy="300" rx="14" ry="10" fill="rgba(26,18,8,0.7)" stroke="rgba(50,35,15,0.4)" stroke-width="1"/>
+          <rect x="286" y="270" width="8" height="32" fill="rgba(100,75,38,0.8)"/>
+
+          <!-- Press base feet -->
+          <rect x="28"  y="418" width="52" height="18" fill="rgba(80,58,28,0.8)" stroke="rgba(50,35,15,0.4)" stroke-width="1"/>
+          <rect x="228" y="418" width="52" height="18" fill="rgba(80,58,28,0.8)" stroke="rgba(50,35,15,0.4)" stroke-width="1"/>
+
+        </g>
+
+        <!-- ═══ TYPE CASES (wall-mounted drawers) ═══ -->
+        <g transform="translate(450,180)">
+          <!-- Case frame -->
+          <rect x="0" y="0" width="220" height="180" fill="rgba(90,68,35,0.8)" stroke="rgba(50,35,15,0.5)" stroke-width="1.5"/>
+          <!-- Drawer dividers — upper case (capitals) -->
+          <rect x="5" y="5" width="210" height="82" fill="rgba(100,75,40,0.6)" stroke="rgba(60,42,18,0.4)" stroke-width="0.8"/>
+          <!-- Upper case compartments -->
+          <g stroke="rgba(60,42,18,0.4)" stroke-width="0.5" fill="none">
+            <line x1="5"   y1="5" x2="5"   y2="87"/>
+            <line x1="42"  y1="5" x2="42"  y2="87"/>
+            <line x1="79"  y1="5" x2="79"  y2="87"/>
+            <line x1="116" y1="5" x2="116" y2="87"/>
+            <line x1="153" y1="5" x2="153" y2="87"/>
+            <line x1="190" y1="5" x2="190" y2="87"/>
+            <line x1="215" y1="5" x2="215" y2="87"/>
+            <line x1="5"  y1="28" x2="215" y2="28"/>
+            <line x1="5"  y1="51" x2="215" y2="51"/>
+            <line x1="5"  y1="74" x2="215" y2="74"/>
+          </g>
+          <!-- Type letter labels in some compartments -->
+          <g fill="rgba(200,180,140,0.4)" font-family="Cinzel, serif" font-size="7" text-anchor="middle">
+            <text x="23"  y="20">A</text>
+            <text x="60"  y="20">B</text>
+            <text x="97"  y="20">C</text>
+            <text x="134" y="20">D</text>
+            <text x="171" y="20">E</text>
+            <text x="23"  y="43">F</text>
+            <text x="60"  y="43">G</text>
+            <text x="97"  y="43">H</text>
+            <text x="134" y="43">I</text>
+            <text x="171" y="43">K</text>
+          </g>
+          <!-- Lower case (small letters) -->
+          <rect x="5" y="95" width="210" height="80" fill="rgba(95,70,36,0.6)" stroke="rgba(60,42,18,0.4)" stroke-width="0.8"/>
+          <g stroke="rgba(60,42,18,0.35)" stroke-width="0.4" fill="none">
+            <line x1="5"   y1="95" x2="5"   y2="175"/>
+            <line x1="30"  y1="95" x2="30"  y2="175"/>
+            <line x1="55"  y1="95" x2="55"  y2="175"/>
+            <line x1="80"  y1="95" x2="80"  y2="175"/>
+            <line x1="105" y1="95" x2="105" y2="175"/>
+            <line x1="130" y1="95" x2="130" y2="175"/>
+            <line x1="155" y1="95" x2="155" y2="175"/>
+            <line x1="180" y1="95" x2="180" y2="175"/>
+            <line x1="205" y1="95" x2="205" y2="175"/>
+            <line x1="215" y1="95" x2="215" y2="175"/>
+            <line x1="5"  y1="115" x2="215" y2="115"/>
+            <line x1="5"  y1="135" x2="215" y2="135"/>
+            <line x1="5"  y1="155" x2="215" y2="155"/>
+          </g>
+          <!-- Label -->
+          <text x="110" y="195" text-anchor="middle" font-family="Cinzel, serif" font-size="7" fill="rgba(200,160,80,0.4)" letter-spacing="1">TYPE CASE · CAPS &amp; LOWER</text>
+        </g>
+
+        <!-- ═══ WORKBENCH ═══ -->
+        <g transform="translate(0,580)">
+          <rect x="0" y="0" width="700" height="22" fill="rgba(110,82,42,0.85)" stroke="rgba(60,40,18,0.5)" stroke-width="1.5"/>
+          <!-- Bench legs -->
+          <rect x="20"  y="20" width="18" height="120" fill="rgba(90,65,30,0.8)"/>
+          <rect x="660" y="20" width="18" height="120" fill="rgba(90,65,30,0.8)"/>
+        </g>
+
+        <!-- COMPOSITOR'S STICK on bench -->
+        <g transform="translate(480,560)">
+          <rect x="0" y="0" width="95" height="14" fill="rgba(58,58,66,0.85)" stroke="rgba(30,30,38,0.5)" stroke-width="1"/>
+          <rect x="0" y="0" width="10" height="14" fill="rgba(80,60,30,0.8)"/>
+          <rect x="0" y="0" width="95" height="4" fill="rgba(68,68,76,0.6)"/>
+          <!-- Type lines in stick -->
+          <g fill="rgba(48,48,56,0.7)">
+            <rect x="12" y="4" width="4" height="8"/>
+            <rect x="18" y="4" width="3" height="8"/>
+            <rect x="23" y="4" width="5" height="8"/>
+            <rect x="30" y="4" width="4" height="8"/>
+            <rect x="36" y="4" width="3" height="8"/>
+            <rect x="41" y="4" width="5" height="8"/>
+            <rect x="48" y="4" width="4" height="8"/>
+          </g>
+          <text x="47" y="24" text-anchor="middle" font-family="serif" font-size="6" fill="rgba(200,160,80,0.35)" font-style="italic">compositor's stick</text>
+        </g>
+
+        <!-- SCATTERED BROADSHEETS on bench and floor -->
+        <!-- Sheet 1 on bench -->
+        <g transform="translate(20,550)">
+          <rect x="0" y="0" width="80" height="110" fill="rgba(232,218,185,0.7)" stroke="rgba(26,18,8,0.3)" stroke-width="0.6" transform="rotate(-8 40 55)"/>
+          <g transform="rotate(-8 40 55)" fill="rgba(26,18,8,0.3)" font-family="serif" font-size="5.5">
+            <text x="10" y="16">PHILADELPHIA, Jan. 1776</text>
+            <line x1="8" y1="20" x2="70" y2="20" stroke="rgba(26,18,8,0.2)" stroke-width="0.4"/>
+            <text x="10" y="30" font-size="5">SOCIETY in every state is a</text>
+            <text x="10" y="38" font-size="5">blessing, but Government,</text>
+            <text x="10" y="46" font-size="5">even in its best state, is but</text>
+            <text x="10" y="54" font-size="5">a necessary evil...</text>
+          </g>
+        </g>
+
+        <!-- Sheet 2 on floor (fallen) -->
+        <g transform="translate(380,660)">
+          <rect x="0" y="0" width="90" height="65" fill="rgba(225,210,175,0.6)" stroke="rgba(26,18,8,0.2)" stroke-width="0.5" transform="rotate(15 45 32)"/>
+          <g transform="rotate(15 45 32)" fill="rgba(26,18,8,0.25)" font-family="serif" font-size="5">
+            <text x="8" y="14">OF the ORIGIN and DESIGN</text>
+            <text x="8" y="22">of GOVERNMENT in general,</text>
+            <text x="8" y="30">with concise Remarks on the</text>
+            <text x="8" y="38">ENGLISH CONSTITUTION.</text>
+          </g>
+        </g>
+
+        <!-- Sheet 3 on floor -->
+        <g transform="translate(520,700)">
+          <rect x="0" y="0" width="70" height="52" fill="rgba(215,200,165,0.55)" stroke="rgba(26,18,8,0.2)" stroke-width="0.5" transform="rotate(-12 35 26)"/>
+          <g transform="rotate(-12 35 26)" fill="rgba(26,18,8,0.2)" font-family="serif" font-size="4.5">
+            <text x="6" y="14">These are the times that</text>
+            <text x="6" y="22">try men's souls. The summer</text>
+            <text x="6" y="30">soldier and the sunshine</text>
+            <text x="6" y="38">patriot will shrink...</text>
+          </g>
+        </g>
+
+        <!-- INK POT on bench -->
+        <g transform="translate(160,555)">
+          <ellipse cx="15" cy="20" rx="15" ry="8" fill="rgba(26,18,8,0.9)" stroke="rgba(50,35,15,0.5)" stroke-width="1"/>
+          <rect x="2" y="12" width="26" height="10" fill="rgba(20,14,8,0.9)" stroke="rgba(50,35,15,0.4)" stroke-width="0.8"/>
+          <ellipse cx="15" cy="12" rx="13" ry="6" fill="rgba(15,10,5,0.95)"/>
+          <!-- Ink surface sheen -->
+          <ellipse cx="12" cy="11" rx="5" ry="2" fill="rgba(60,40,20,0.3)"/>
+        </g>
+
+        <!-- QUILL PEN -->
+        <g transform="translate(185,530)">
+          <path d="M0,40 Q8,20 20,0" fill="none" stroke="rgba(220,200,150,0.7)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M20,0 Q24,-8 18,-4 Q10,2 0,40" fill="rgba(210,190,130,0.5)"/>
+          <line x1="0" y1="40" x2="3" y2="50" stroke="rgba(26,18,8,0.5)" stroke-width="1.2"/>
+        </g>
+
+        <!-- ═══ CANDLE ═══ -->
+        <g transform="translate(610,430)">
+          <!-- Holder -->
+          <ellipse cx="18" cy="60" rx="20" ry="8" fill="rgba(180,140,60,0.6)" stroke="rgba(140,100,40,0.4)" stroke-width="1"/>
+          <rect x="8" y="52" width="20" height="10" fill="rgba(160,120,50,0.6)"/>
+          <!-- Wax drips -->
+          <path d="M10,52 Q8,35 10,20" fill="none" stroke="rgba(240,230,210,0.3)" stroke-width="3"/>
+          <path d="M26,52 Q28,38 26,22" fill="none" stroke="rgba(240,230,210,0.25)" stroke-width="2"/>
+          <!-- Candle body -->
+          <rect x="10" y="0" width="16" height="54" fill="rgba(242,235,210,0.85)" stroke="rgba(200,185,155,0.4)" stroke-width="0.8"/>
+          <!-- Candle top -->
+          <ellipse cx="18" cy="0" rx="8" ry="4" fill="rgba(238,230,205,0.9)"/>
+          <!-- Wick -->
+          <line x1="18" y1="-2" x2="18" y2="-14" stroke="rgba(60,40,20,0.7)" stroke-width="1.2"/>
+          <!-- Flame -->
+          <ellipse cx="18" cy="-20" rx="6" ry="10" fill="url(#candleFlame)"/>
+          <ellipse cx="18" cy="-16" rx="3" ry="6" fill="rgba(255,240,180,0.9)"/>
+          <!-- Halo -->
+          <ellipse cx="18" cy="-16" rx="28" ry="28" fill="url(#candleFlame)" opacity="0.4"/>
+        </g>
+
+        <!-- Candle light wash over whole scene -->
+        <rect width="700" height="900" fill="url(#candleLight)"/>
+
+        <!-- Shadow cast by press -->
+        <ellipse cx="250" cy="710" rx="180" ry="25" fill="rgba(0,0,0,0.4)"/>
+
+        <!-- TITLE BLOCK -->
+        <rect x="40" y="800" width="235" height="72" fill="rgba(26,18,8,0.88)" stroke="rgba(212,148,58,0.2)" stroke-width="0.8"/>
+        <line x1="40" y1="818" x2="275" y2="818" stroke="rgba(212,148,58,0.12)" stroke-width="0.4"/>
+        <text x="50" y="814" font-family="Cinzel, serif" font-size="6.5" fill="rgba(212,148,58,0.5)" letter-spacing="1">PRINTING HOUSE · PHILADELPHIA</text>
+        <text x="50" y="832" font-family="Libre Baskerville, serif" font-style="italic" font-size="9.5" fill="rgba(242,230,200,0.65)">Common Sense · In Press</text>
+        <text x="50" y="848" font-family="Libre Baskerville, serif" font-size="7.5" fill="rgba(212,148,58,0.35)">R. Bell, Publisher · January 1776</text>
+        <text x="50" y="862" font-family="Libre Baskerville, serif" font-size="7" fill="rgba(212,148,58,0.22)" font-style="italic">120,000 copies · three months</text>
+
+        <!-- Marginalia -->
+        <g fill="rgba(212,148,58,0.2)" font-family="Libre Baskerville, serif" font-style="italic" font-size="7.5">
+          <text x="600" y="320" transform="rotate(2 600 320)">cf. Gutenberg · 1440</text>
+          <text x="600" y="420" transform="rotate(-1 600 420)">iron screw press</text>
+          <text x="600" y="500" transform="rotate(1 600 500)">hand-set type · pewter</text>
+        </g>
+
+      </svg>
+
+      <div class="hero-title">
+        <span class="place-tag">Philadelphia &nbsp;·&nbsp; London &nbsp;·&nbsp; Paris</span>
+        <h1>Thomas<br/>Paine<br/><em>of Common Sense</em></h1>
+        <span class="years">1737 &nbsp;—&nbsp; 1809</span>
+      </div>
+    </div>
+
+    <!-- Right: Bio Panel -->
+    <div class="bio-panel">
+      <div class="exhibit-tag">Historical Archive &nbsp;·&nbsp; Portrait Study</div>
+
+      <div class="photo-frame">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Thomas_Paine.jpg/1280px-Thomas_Paine.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+             alt="Thomas Paine"
+             onerror="this.style.display='none'" />
+      </div>
+
+      <div class="placard">
+        <div class="placard-name">Thomas Paine</div>
+        <div class="placard-sub">Pamphleteer &amp; Revolutionary</div>
+        <div class="placard-dates">Thetford, Norfolk, 1737 &nbsp;·&nbsp; New York City, 1809</div>
+        <p class="placard-bio">
+          <strong>Thomas Paine turned the American Revolution from a tax dispute into a war for human freedom.</strong>
+          His 47-page pamphlet Common Sense, published in January 1776, sold 120,000 copies in three months and convinced a generation of colonists that kings were a fiction and independence a necessity.
+          <br/><br/>
+          He wrote with the fury of a man who believed words could remake the world — and they did, twice, in America and France. Yet he died nearly friendless, denounced by the very nation he helped create. His later works proved too radical even for radicals.
+          <br/><br/>
+          He demanded not just political revolution but moral revolution. <em>He is still waiting for it.</em>
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- REVOLUTION BAND -->
+  <div class="revolution-band">
+    <div class="band-rule"></div>
+    <span class="band-text">These Are the Times That Try Men's Souls</span>
+    <div class="band-rule"></div>
+  </div>
+
+  <!-- CHATBOT SECTION -->
+  <section class="chatbot-section">
+
+    <div class="chatbot-intro">
+      <h2>Argue with<br/><em>the Pamphleteer.</em></h2>
+      <p>
+        Paine speaks from Common Sense, The Crisis Papers, Rights of Man, The Age of Reason, and Agrarian Justice — a body of work that spans five decades of revolutionary thought across three countries.
+      </p>
+      <p>
+        He was the first writer to call for American independence in plain language anyone could read. He was also the first to propose something like a universal basic income. He has been called the father of the American Revolution and an enemy of God — often by the same people.
+      </p>
+      <p>
+        Ask him about monarchy, religion, inequality, revolution, or what he thinks of the republic he helped create and what America has done with it.
+      </p>
+
+      <div class="common-sense-note">
+        <strong>Common Sense · January 1776</strong>
+        "A long habit of not thinking a thing wrong gives it a superficial appearance of being right, and raises at first a formidable outcry in defense of custom. But the tumult soon subsides."
+      </div>
+
+      <div class="domain-tags">
+        <span class="domain-tag">Revolutionary Politics</span>
+        <span class="domain-tag">Political Pamphlets</span>
+        <span class="domain-tag">American Independence</span>
+        <span class="domain-tag">Natural Rights</span>
+        <span class="domain-tag">Deism</span>
+        <span class="domain-tag">Social Contract</span>
+        <span class="domain-tag">Anti-Monarchy</span>
+        <span class="domain-tag">Religious Skepticism</span>
+        <span class="domain-tag">Economic Justice</span>
+        <span class="domain-tag">The Republic in 2026</span>
+      </div>
+    </div>
+
+    <div class="chatbot-embed" id="chatbot-container">
+      <link rel="stylesheet" href="https://jimmyardis.github.io/thomas-paine/widget/thomas-paine-widget.css">
+      <script src="https://jimmyardis.github.io/thomas-paine/widget/thomas-paine-widget.js"
+              data-api-url="https://thomas-paine-production.up.railway.app"
+              data-persona-id="thomas-paine"></script>
+    </div>
+
+      <link rel="stylesheet" href="https://jimmyardis.github.io/jane-jacobs-bot/widget/jacobs-widget.css">
+      <script src="https://jimmyardis.github.io/jane-jacobs-bot/widget/jacobs-widget.js"
+              data-api-url="https://thomas-paine-production.up.railway.app"
+              data-persona-id="thomas-paine"></script>
+
+    </div>
+
+  </section>
+
+  <!-- PULL QUOTE -->
+  <div class="pull-quote">
+    <span class="quote-ornament">— ✦ —</span>
+    <blockquote>
+      "These are the times that try men's souls. The summer soldier and the sunshine patriot will, in this crisis, shrink from the service of their country; but he that stands by it now, deserves the love and thanks of man and woman."
+    </blockquote>
+    <cite>— Thomas Paine &nbsp;·&nbsp; The Crisis &nbsp;·&nbsp; December 1776</cite>
+  </div>
+
+  <!-- CORPUS STRIP -->
+  <div class="corpus-strip">
+    <div class="corpus-label">Corpus Sources</div>
+    <div class="corpus-list">
+      <span class="corpus-item">Common Sense · 1776</span>
+      <span class="corpus-item">The Crisis Papers · 1776–1783</span>
+      <span class="corpus-item">Rights of Man · 1791</span>
+      <span class="corpus-item">The Age of Reason · 1794–1807</span>
+      <span class="corpus-item">Agrarian Justice · 1797</span>
+      <span class="corpus-item">Letter to George Washington · 1796</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-text">Thomas Paine &nbsp;·&nbsp; 1737 – 1809</span>
+    <span class="footer-text">Powered by His Own Words</span>
+    <span class="footer-text">Accession No. TP–1737–2026</span>
+  </footer>
+
+</body>
+</html>
