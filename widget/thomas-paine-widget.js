@@ -200,6 +200,23 @@
                         </svg>
                     </button>
                 </div>
+
+                <div class="jj-educator-bar">
+                    <button id="jj-lesson-plan" class="jj-edu-btn" disabled title="Generate a lesson plan featuring this figure">
+                        Lesson Plan
+                    </button>
+                    <button id="jj-discussion" class="jj-edu-btn" disabled title="Generate discussion questions">
+                        Discussion Questions
+                    </button>
+                </div>
+
+                <div id="jj-edu-panel" class="jj-edu-panel jj-hidden">
+                    <div class="jj-edu-panel-header">
+                        <span id="jj-edu-panel-title" class="jj-edu-panel-title"></span>
+                        <button id="jj-edu-close" class="jj-edu-close" title="Close">&times;</button>
+                    </div>
+                    <div id="jj-edu-panel-body" class="jj-edu-panel-body"></div>
+                </div>
             </div>
         `;
 
@@ -254,6 +271,15 @@
                 sendMessageWithText(message);
             });
         });
+
+        // Educator toolbar buttons
+        const lessonPlanBtn = document.getElementById('jj-lesson-plan');
+        const discussionBtn = document.getElementById('jj-discussion');
+        const eduClose = document.getElementById('jj-edu-close');
+
+        lessonPlanBtn.addEventListener('click', () => fetchEducatorContent('lesson-plan', 'Lesson Plan'));
+        discussionBtn.addEventListener('click', () => fetchEducatorContent('discussion-questions', 'Discussion Questions'));
+        eduClose.addEventListener('click', closeEduPanel);
     }
 
     // Toggle chat window
@@ -390,6 +416,9 @@
 
             const data = await response.json();
             conversationId = data.conversation_id;
+
+            // Unlock educator buttons once a conversation is established
+            enableEducatorButtons();
 
             // Add assistant response with typewriter effect
             removeTypingIndicator();
@@ -529,6 +558,80 @@
         }
 
         typeChar();
+    }
+
+    // Enable educator buttons once a conversation starts
+    function enableEducatorButtons() {
+        const lessonBtn = document.getElementById('jj-lesson-plan');
+        const discussBtn = document.getElementById('jj-discussion');
+        if (lessonBtn) lessonBtn.disabled = false;
+        if (discussBtn) discussBtn.disabled = false;
+    }
+
+    // Fetch educator content from API and display in panel
+    async function fetchEducatorContent(endpoint, title) {
+        const lessonBtn = document.getElementById('jj-lesson-plan');
+        const discussBtn = document.getElementById('jj-discussion');
+        const panel = document.getElementById('jj-edu-panel');
+        const panelTitle = document.getElementById('jj-edu-panel-title');
+        const panelBody = document.getElementById('jj-edu-panel-body');
+
+        // Disable buttons, show loading
+        if (lessonBtn) lessonBtn.disabled = true;
+        if (discussBtn) discussBtn.disabled = true;
+        panelTitle.textContent = title;
+        panelBody.textContent = 'Generating…';
+        panel.classList.remove('jj-hidden');
+
+        try {
+            const response = await fetch(`${API_URL}/educator/${endpoint}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ persona_id: PERSONA_ID }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+            const content = data.lesson_plan || data.questions || '';
+            panelBody.innerHTML = markdownToHtml(content);
+        } catch (err) {
+            console.error('Educator fetch error:', err);
+            panelBody.textContent = 'Sorry, could not generate content. Please try again.';
+        } finally {
+            // Re-enable if conversation is active
+            if (conversationId) {
+                if (lessonBtn) lessonBtn.disabled = false;
+                if (discussBtn) discussBtn.disabled = false;
+            }
+        }
+    }
+
+    // Close educator panel
+    function closeEduPanel() {
+        const panel = document.getElementById('jj-edu-panel');
+        if (panel) panel.classList.add('jj-hidden');
+    }
+
+    // Minimal markdown-to-HTML converter for lesson plan / questions content
+    function markdownToHtml(text) {
+        return text
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+            .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+            .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>')
+            .replace(/^- (.+)$/gm, '<li>$1</li>')
+            .replace(/(<li>[\s\S]+?<\/li>)\n(?!<li>)/g, '$1</ul>\n')
+            .replace(/(?:^|\n)(<li>)/g, '\n<ul>$1')
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/^(?!<[hul]|<\/[hul])(.+)$/gm, '$1')
+            .replace(/<p><\/p>/g, '')
+            || text;
     }
 
     // Initialize widget when DOM is ready
