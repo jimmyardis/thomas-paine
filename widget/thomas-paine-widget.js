@@ -14,13 +14,17 @@
     // Configuration from script tag
     const script = document.currentScript;
     const API_URL = script.getAttribute('data-api-url') || 'http://localhost:8000';
-    const PERSONA_ID = script.getAttribute('data-persona-id') || 'jane-jacobs';
+    const PERSONA_ID = script.getAttribute('data-persona-id') || 'thomas-paine';
 
     let conversationId = null;
     let isOpen = false;
     let isTyping = false;
     let personaConfig = null;
     let voiceEnabled = false;
+    let currentMode = 'modern';
+    let currentLength = 'detailed';
+    let currentReadingLevel = 'general';
+    let settingsOpen = false;
 
     // Load persona configuration and initialize widget
     async function init() {
@@ -124,7 +128,37 @@
                         <p class="jj-subtitle">${ui.header_subtitle}</p>
                         <p class="jj-tagline">${ui.header_tagline}</p>
                     </div>
-                    <button id="jj-close" class="jj-close-btn">&times;</button>
+                    <div class="jj-header-btns">
+                        <button id="jj-settings-btn" class="jj-settings-btn" title="Conversation settings" aria-label="Settings">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        </button>
+                        <button id="jj-close" class="jj-close-btn">&times;</button>
+                    </div>
+                </div>
+
+                <div id="jj-settings-panel" class="jj-settings-panel jj-hidden">
+                    <div class="jj-settings-row">
+                        <span class="jj-settings-label">Era</span>
+                        <div class="jj-pill-group" id="jj-mode-pills">
+                            <button class="jj-pill" data-group="mode" data-value="modern">Modern</button>
+                            <button class="jj-pill" data-group="mode" data-value="historical">Historical only</button>
+                        </div>
+                    </div>
+                    <div class="jj-settings-row">
+                        <span class="jj-settings-label">Length</span>
+                        <div class="jj-pill-group" id="jj-length-pills">
+                            <button class="jj-pill" data-group="length" data-value="brief">Brief</button>
+                            <button class="jj-pill" data-group="length" data-value="conversational">Conversational</button>
+                            <button class="jj-pill" data-group="length" data-value="detailed">Detailed</button>
+                        </div>
+                    </div>
+                    <div class="jj-settings-row">
+                        <span class="jj-settings-label">Reading level</span>
+                        <div class="jj-pill-group" id="jj-level-pills">
+                            <button class="jj-pill" data-group="reading_level" data-value="general">Standard</button>
+                            <button class="jj-pill" data-group="reading_level" data-value="middle_school">Student (6–8th grade)</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="jj-messages" class="jj-messages">
@@ -172,8 +206,10 @@
         const input = document.getElementById('jj-input');
 
         const voiceBtn = document.getElementById('jj-voice');
+        const settingsBtn = document.getElementById('jj-settings-btn');
 
         trigger.addEventListener('click', toggleChat);
+        settingsBtn.addEventListener('click', toggleSettings);
         closeBtn.addEventListener('click', closeChat);
         sendBtn.addEventListener('click', sendMessage);
         voiceBtn.addEventListener('click', toggleVoice);
@@ -183,6 +219,21 @@
                 sendMessage();
             }
         });
+
+        // Settings pill buttons
+        document.querySelectorAll('.jj-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const group = btn.getAttribute('data-group');
+                const value = btn.getAttribute('data-value');
+                if (group === 'mode') currentMode = value;
+                else if (group === 'length') currentLength = value;
+                else if (group === 'reading_level') currentReadingLevel = value;
+                syncPills(group, value);
+            });
+        });
+        syncPills('mode', currentMode);
+        syncPills('length', currentLength);
+        syncPills('reading_level', currentReadingLevel);
 
         // Starter buttons
         const starters = config.widget.conversation_starters;
@@ -247,6 +298,22 @@
         btn.title = voiceEnabled ? 'Voice on — click to mute' : 'Enable voice';
     }
 
+    // Toggle settings panel
+    function toggleSettings() {
+        settingsOpen = !settingsOpen;
+        const panel = document.getElementById('jj-settings-panel');
+        const btn = document.getElementById('jj-settings-btn');
+        panel.classList.toggle('jj-hidden', !settingsOpen);
+        btn.classList.toggle('jj-settings-active', settingsOpen);
+    }
+
+    // Sync pill active state
+    function syncPills(group, activeValue) {
+        document.querySelectorAll(`.jj-pill[data-group="${group}"]`).forEach(btn => {
+            btn.classList.toggle('jj-pill-active', btn.getAttribute('data-value') === activeValue);
+        });
+    }
+
     // Play base64-encoded MP3 audio
     function playAudio(base64) {
         const audio = new Audio(`data:audio/mpeg;base64,${base64}`);
@@ -301,7 +368,10 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     message: message,
-                    conversation_id: conversationId
+                    conversation_id: conversationId,
+                    mode: currentMode,
+                    length: currentLength,
+                    reading_level: currentReadingLevel
                 })
             });
 
@@ -399,3 +469,4 @@
         init();
     }
 })();
+
