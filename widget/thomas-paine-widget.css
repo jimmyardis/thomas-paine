@@ -507,3 +507,113 @@
     pointer-events: none;
     opacity: 0.7;
 }
+
+/* ── Settings panel ──────────────────────────────────────────────────────── */
+
+/* Header buttons container (gear + close stacked vertically) */
+.jj-header-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+    margin-left: 12px;
+}
+
+/* Gear icon settings button */
+.jj-settings-btn {
+    background: none;
+    border: none;
+    color: var(--persona-cream);
+    cursor: pointer;
+    padding: 2px;
+    opacity: 0.55;
+    transition: opacity 0.2s, color 0.2s;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.jj-settings-btn:hover {
+    opacity: 0.9;
+}
+
+.jj-settings-btn.jj-settings-active {
+    opacity: 1;
+    color: var(--persona-primary-color);
+}
+
+/* Settings panel sits between header and messages, hidden by default */
+.jj-settings-panel {
+    background: #1c1c1c;
+    border-bottom: 2px solid var(--persona-primary-color);
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.jj-settings-panel.jj-hidden {
+    display: none;
+}
+
+.jj-settings-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.jj-settings-label {
+    font-family: var(--persona-font-primary);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+    width: 78px;
+    flex-shrink: 0;
+}
+
+.jj-pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.jj-pill {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.5);
+    font-family: var(--persona-font-secondary);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    line-height: 1.6;
+}
+
+.jj-pill:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.jj-pill.jj-pill-active {
+    background: var(--persona-primary-color);
+    border-color: var(--persona-primary-color);
+    color: var(--persona-cream);
+}
+
+.jj-pill.jj-pill-active:hover {
+    opacity: 0.9;
+}
+
+.jj-settings-btn:focus,
+.jj-pill:focus {
+    outline: 3px solid var(--persona-primary-color);
+    outline-offset: 2px;
+}
