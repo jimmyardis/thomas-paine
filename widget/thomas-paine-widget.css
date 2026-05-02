@@ -457,10 +457,12 @@
 /* Mobile Responsiveness */
 @media (max-width: 480px) {
     .jj-chat-window {
-        width: calc(100vw - 32px);
-        height: calc(100vh - 140px);
-        right: 16px;
-        bottom: 96px;
+        width: calc(100vw - 24px);
+        /* 65vh avoids iOS Safari 100vh bug (includes browser chrome) */
+        height: 65vh;
+        max-height: 520px;
+        right: 12px;
+        bottom: 75px;
     }
 
     .jj-trigger {
