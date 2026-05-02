@@ -65,6 +65,7 @@
     right: 24px;
     width: 400px;
     height: 620px;
+    max-height: calc(100vh - 120px);
     background: var(--persona-cream);
     border-radius: 2px;
     box-shadow:
