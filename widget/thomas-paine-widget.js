@@ -108,9 +108,17 @@
     function createWidget(config) {
         const ui = config.widget.ui;
         const starters = config.widget.conversation_starters;
+        const trust = config.trust_score || {};
+        const trustBadgeHtml = trust.score != null
+            ? `<div class="jj-trust-badge" title="Source grounding: ${trust.score}/100 — ${(trust.corpus_chunks||0).toLocaleString()} corpus chunks from ${trust.distinct_works||0} works${trust.has_discourse ? ', with critical discourse' : ''}">`
+              + `<span class="jj-trust-label">Grounded</span>`
+              + `<span class="jj-trust-score">${trust.score}</span>`
+              + `<span class="jj-trust-max">/100</span>`
+              + `<span class="jj-trust-lbl">${trust.label||''}</span></div>`
+            : '';
 
         const container = document.createElement('div');
-        container.id = 'thomas-paine-widget';
+        container.id = 'jane-jacobs-widget';
         container.innerHTML = `
             <div id="jj-trigger" class="jj-trigger">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -127,6 +135,7 @@
                         <h3>${ui.header_title}</h3>
                         <p class="jj-subtitle">${ui.header_subtitle}</p>
                         <p class="jj-tagline">${ui.header_tagline}</p>
+                        ${trustBadgeHtml}
                     </div>
                     <div class="jj-header-btns">
                         <button id="jj-settings-btn" class="jj-settings-btn" title="Conversation settings" aria-label="Settings">
@@ -384,7 +393,11 @@
 
             // Add assistant response with typewriter effect
             removeTypingIndicator();
-            addMessage('assistant', data.response, true);
+            addMessage('assistant', data.response, true, {
+                confidence: data.confidence,
+                confidence_score: data.confidence_score,
+                sources: data.sources || [],
+            });
 
             // Play audio if voice is enabled and API returned it
             if (voiceEnabled && data.audio_base64) {
@@ -403,7 +416,7 @@
     }
 
     // Add message to chat
-    function addMessage(role, content, useTypewriter = false) {
+    function addMessage(role, content, useTypewriter = false, meta = null) {
         const messagesContainer = document.getElementById('jj-messages');
 
         const messageDiv = document.createElement('div');
@@ -413,17 +426,73 @@
         contentDiv.className = 'jj-message-content';
 
         if (role === 'assistant' && useTypewriter) {
-            // Typewriter effect
             typewriterEffect(contentDiv, content);
         } else {
             contentDiv.textContent = content;
         }
 
         messageDiv.appendChild(contentDiv);
-        messagesContainer.appendChild(messageDiv);
 
-        // Scroll to bottom
+        if (role === 'assistant' && meta) {
+            messageDiv.appendChild(buildMessageMeta(meta));
+        }
+
+        messagesContainer.appendChild(messageDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Build confidence badge + sources panel for an assistant message
+    function buildMessageMeta(meta) {
+        const { confidence, confidence_score, sources } = meta;
+        const wrap = document.createElement('div');
+        wrap.className = 'jj-message-meta';
+
+        if (confidence) {
+            const dots = { high: '●●●', medium: '●●○', low: '●○○' };
+            const badge = document.createElement('span');
+            badge.className = `jj-confidence jj-confidence-${confidence}`;
+            badge.textContent = `${dots[confidence] || '●○○'} ${confidence.charAt(0).toUpperCase() + confidence.slice(1)}`;
+            badge.title = `Source confidence: ${confidence_score || 0}/100`;
+            wrap.appendChild(badge);
+        }
+
+        if (sources && sources.length > 0) {
+            const toggle = document.createElement('button');
+            toggle.className = 'jj-sources-toggle';
+            toggle.textContent = `§ ${sources.length} source${sources.length !== 1 ? 's' : ''}`;
+
+            const panel = document.createElement('div');
+            panel.className = 'jj-sources-panel jj-hidden';
+
+            sources.forEach(src => {
+                const item = document.createElement('div');
+                item.className = 'jj-source-item';
+
+                const typeSpan = document.createElement('span');
+                const isOwn = src.knowledge_type === 'own words';
+                typeSpan.className = `jj-source-type ${isOwn ? 'jj-source-own' : 'jj-source-discourse'}`;
+                typeSpan.textContent = isOwn ? 'own writings' : 'discourse';
+
+                const titleSpan = document.createElement('span');
+                titleSpan.className = 'jj-source-title';
+                const yr = src.year && src.year !== 'Unknown' ? ` · ${src.year}` : '';
+                titleSpan.textContent = (src.title || 'Unknown') + yr;
+
+                item.appendChild(typeSpan);
+                item.appendChild(titleSpan);
+                panel.appendChild(item);
+            });
+
+            toggle.addEventListener('click', () => {
+                panel.classList.toggle('jj-hidden');
+                toggle.classList.toggle('jj-sources-active');
+            });
+
+            wrap.appendChild(toggle);
+            wrap.appendChild(panel);
+        }
+
+        return wrap;
     }
 
     // Typewriter effect with variable speed
